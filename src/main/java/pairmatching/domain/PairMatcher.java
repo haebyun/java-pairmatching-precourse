@@ -80,4 +80,8 @@ public class PairMatcher {
         }
         return null;
     }
+
+    public void initializeMatchingResults() {
+        matchingResults = new ArrayList<>();
+    }
 }

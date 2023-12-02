@@ -11,7 +11,6 @@ public class PairController {
     PairMatcher pairMatcher = new PairMatcher(crewRepository);
 
     public void run() {
-        // 크루 목록 로드
         crewRepository.loadCrewsFromFiles("src/main/resources/backend-crew.md", "src/main/resources/frontend-crew.md");
 
         while (true) {
@@ -25,7 +24,7 @@ public class PairController {
                 continue;
             }
             if (menuInput.equals("3")) {
-                // 페어 초기화 로직
+                initializePair();
                 continue;
             }
             if (menuInput.equalsIgnoreCase("Q")) {
@@ -33,6 +32,10 @@ public class PairController {
             }
             System.out.println("[ERROR] 잘못된 입력입니다.");
         }
+    }
+
+    private void initializePair() {
+        pairMatcher.initializeMatchingResults();
     }
 
     private void searchPair() {
