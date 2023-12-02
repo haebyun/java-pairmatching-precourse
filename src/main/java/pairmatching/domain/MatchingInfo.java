@@ -32,6 +32,10 @@ public class MatchingInfo {
         return pairs;
     }
 
+    public void updatePairs(List<Pair> pairs) {
+        this.pairs = pairs;
+    }
+
     @Override
     public String toString() {
         return pairs.stream()

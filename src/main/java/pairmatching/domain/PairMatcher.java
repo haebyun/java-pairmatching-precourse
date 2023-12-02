@@ -11,21 +11,31 @@ public class PairMatcher {
         this.crewRepository = crewRepository;
     }
 
-    public void matchPairs(Course course, Level level, Mission mission) {
-        MatchingInfo existingMatchingInfo = findMatchingInfo(course, level, mission);
+    public boolean hasPreviousMatchingInfo(CourseLevelMissionInput courseLevelMissionInput) {
+        MatchingInfo existingMatchingInfo = findMatchingInfo(courseLevelMissionInput);
 
-        if (existingMatchingInfo != null) {
-            // MatchingInfo with the same course, level, and mission exists, update it
-            updateMatchingInfo(existingMatchingInfo);
-        } else {
-            // No existing MatchingInfo found, create a new one and add it
-            createMatchingInfo(course, level, mission);
+        if (existingMatchingInfo == null) {
+            return false;
         }
+        return true;
     }
 
-    private MatchingInfo findMatchingInfo(Course course, Level level, Mission mission) {
+    public void matchPairs(CourseLevelMissionInput courseLevelMissionInput) {
+        MatchingInfo existingMatchingInfo = findMatchingInfo(courseLevelMissionInput);
+
+        if (existingMatchingInfo == null) {
+            createMatchingInfo(courseLevelMissionInput);
+            return;
+        }
+
+        updateMatchingInfo(existingMatchingInfo);
+    }
+
+    private MatchingInfo findMatchingInfo(CourseLevelMissionInput courseLevelMissionInput) {
         for (MatchingInfo matchingInfo : matchingResults) {
-            if (matchingInfo.getCourse() == course && matchingInfo.getLevel() == level && matchingInfo.getMission() == mission) {
+            if (matchingInfo.getCourse() == courseLevelMissionInput.getCourse() &&
+                    matchingInfo.getLevel() == courseLevelMissionInput.getLevel() &&
+                    matchingInfo.getMission() == courseLevelMissionInput.getMission()) {
                 return matchingInfo;
             }
         }
@@ -37,27 +47,16 @@ public class PairMatcher {
         crewRepository.shuffleCrews(selectedCrews);
         List<Pair> pairs = performPairMatching(crewRepository.getCrews());
 
-        MatchingInfo updatedMatchingInfo = new MatchingInfo(
-                matchingInfo.getCourse(),
-                matchingInfo.getLevel(),
-                matchingInfo.getMission(),
-                pairs
-        );
-
-        int index = matchingResults.indexOf(matchingInfo);
-        if (index >= 0) {
-            matchingResults.set(index, updatedMatchingInfo);
-        }
+        matchingInfo.updatePairs(pairs);
     }
 
-    private void createMatchingInfo(Course course, Level level, Mission mission) {
-        List<Crew> selectedCrews = crewRepository.getCrewsByCourse(course);
+    private void createMatchingInfo(CourseLevelMissionInput courseLevelMissionInput) {
+        List<Crew> selectedCrews = crewRepository.getCrewsByCourse(courseLevelMissionInput.getCourse());
         crewRepository.shuffleCrews(selectedCrews);
         List<Pair> pairs = performPairMatching(crewRepository.getCrews());
-        MatchingInfo matchingInfo = new MatchingInfo(course, level, mission, pairs);
+        MatchingInfo matchingInfo = new MatchingInfo(courseLevelMissionInput.getCourse(), courseLevelMissionInput.getLevel(), courseLevelMissionInput.getMission(), pairs);
         matchingResults.add(matchingInfo);
     }
-
 
     public List<Pair> performPairMatching(List<Crew> crews) {
         List<Pair> pairs = new ArrayList<>();

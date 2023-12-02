@@ -13,7 +13,6 @@ public class Pair {
     }
 
     public void addCrew(Crew crew) {
-        // 이미 두 명의 멤버가 있을 경우 예외 처리 필요
         members.add(crew);
     }
 

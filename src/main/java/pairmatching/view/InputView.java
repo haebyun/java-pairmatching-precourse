@@ -20,14 +20,6 @@ public class InputView {
         return selectedMenu;
     }
 
-    private static int readInt() {
-        try {
-            return Integer.parseInt(readLine());
-        } catch (NumberFormatException numberFormatException) {
-            throw new IllegalArgumentException("에러문");
-        }
-    }
-
     public static String readCourseLevelMission() {
         String menu = "#############################################\n"
                 + "과정: 백엔드 | 프론트엔드\n"
