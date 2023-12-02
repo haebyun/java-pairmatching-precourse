@@ -15,7 +15,7 @@ public class PairMatcher {
         List<Crew> selectedCrews = crewRepository.getCrewsByCourse(course);
 
         crewRepository.shuffleCrews(selectedCrews);
-        List<Pair> pairs = performPairMatching(selectedCrews);
+        List<Pair> pairs = performPairMatching(crewRepository.getCrews());
 
         Mission selectedMission = Mission.fromMissionNameAndLevel(missionName, level);
 
@@ -28,7 +28,6 @@ public class PairMatcher {
 
         matchingResults.add(matchingInfo);
     }
-
 
     public List<Pair> performPairMatching(List<Crew> crews) {
         List<Pair> pairs = new ArrayList<>();
