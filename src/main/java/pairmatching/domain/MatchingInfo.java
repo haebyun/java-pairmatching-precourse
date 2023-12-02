@@ -1,6 +1,7 @@
 package pairmatching.domain;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MatchingInfo {
     private Course course;
@@ -15,13 +16,26 @@ public class MatchingInfo {
         this.pairs = pairs;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public Mission getMission() {
+        return mission;
+    }
+
+    public List<Pair> getPairs() {
+        return pairs;
+    }
+
     @Override
     public String toString() {
-        return "MatchingInfo{" +
-                "course=" + course +
-                "\nlevel=" + level +
-                "\nmission=" + mission +
-                "\npairs=" + pairs +
-                '}';
+        return pairs.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining("\n"));
     }
 }
