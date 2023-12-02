@@ -16,4 +16,13 @@ public enum Level {
     public String getName() {
         return name;
     }
+
+    public static Level fromLevelName(String levelName) {
+        for (Level level : Level.values()) {
+            if (level.name.equals(levelName)) {
+                return level;
+            }
+        }
+        return null;
+    }
 }
