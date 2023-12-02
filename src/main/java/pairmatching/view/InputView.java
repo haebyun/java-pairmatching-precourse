@@ -5,7 +5,7 @@ import static camp.nextstep.edu.missionutils.Console.readLine;
 public class InputView {
     public static final String LINE_SEPARATOR = System.lineSeparator();
 
-    public static int selectMenuOption() {
+    public static String selectMenuOption() {
         String menu = "기능을 선택하세요.\n"
                 + "1. 페어 매칭\n"
                 + "2. 페어 조회\n"
@@ -14,7 +14,7 @@ public class InputView {
 
         System.out.println(menu);
 
-        int selectedMenu = readInt();
+        String selectedMenu = readLine();
         System.out.print(LINE_SEPARATOR);
 
         return selectedMenu;
