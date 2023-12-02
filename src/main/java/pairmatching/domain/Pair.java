@@ -21,6 +21,6 @@ public class Pair {
     public String toString() {
         return members.stream()
                 .map(Crew::getName)
-                .collect(Collectors.joining(" - "));
+                .collect(Collectors.joining(" : "));
     }
 }

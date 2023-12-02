@@ -72,18 +72,12 @@ public class PairMatcher {
         return pairs;
     }
 
-    public List<MatchingInfo> getMatchingResults() {
-        return matchingResults;
-    }
-
-    public List<Pair> getPairResultsByCourseLevelMission(Course course, Level level, Mission mission) {
-        List<Pair> matchingPairs = new ArrayList<>();
+    public MatchingInfo getMatchingInfoByCourseLevelMission(Course course, Level level, Mission mission) {
         for (MatchingInfo matchingInfo : matchingResults) {
             if (matchingInfo.getCourse() == course && matchingInfo.getLevel() == level && matchingInfo.getMission() == mission) {
-                matchingPairs.addAll(matchingInfo.getPairs());
-                break;
+                return matchingInfo;
             }
         }
-        return matchingPairs;
+        return null;
     }
 }
