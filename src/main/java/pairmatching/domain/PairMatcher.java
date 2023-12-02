@@ -4,7 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PairMatcher {
-    public List<Pair> matchPairs(List<Crew> crews) {
+    private List<MatchingInfo> matchingResults = new ArrayList<>();
+    private CrewRepository crewRepository;
+
+    public PairMatcher(CrewRepository crewRepository) {
+        this.crewRepository = crewRepository;
+    }
+
+    public void matchPairs(Course course, Level level, String missionName) {
+        List<Crew> selectedCrews = crewRepository.getCrewsByCourse(course);
+
+        crewRepository.shuffleCrews(selectedCrews);
+        List<Pair> pairs = performPairMatching(selectedCrews);
+
+        // MatchingInfo 객체를 생성
+        MatchingInfo matchingInfo = new MatchingInfo(course, level, missionName, pairs);
+
+        // matchingResults 리스트에 추가
+        matchingResults.add(matchingInfo);
+    }
+
+
+    public List<Pair> performPairMatching(List<Crew> crews) {
         List<Pair> pairs = new ArrayList<>();
         for (int i = 0; i < crews.size(); i += 2) {
             if (i == crews.size() - 1) {
@@ -16,4 +37,9 @@ public class PairMatcher {
         }
         return pairs;
     }
+
+    public List<MatchingInfo> getMatchingResults() {
+        return matchingResults;
+    }
+
 }
