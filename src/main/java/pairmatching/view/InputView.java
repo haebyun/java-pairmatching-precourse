@@ -28,7 +28,7 @@ public class InputView {
         }
     }
 
-    public String readCourseLevelMission() {
+    public static String readCourseLevelMission() {
         String menu = "#############################################\n"
                 + "과정: 백엔드 | 프론트엔드\n"
                 + "미션:\n"
@@ -38,14 +38,14 @@ public class InputView {
                 + "  - 레벨4: 성능개선 | 배포\n"
                 + "  - 레벨5: \n"
                 + "#############################################\n"
-                + "과정, 레벨, 미션을 선택하세요. (예: 백엔드, 레벨1, 자동차경주): ";
+                + "과정, 레벨, 미션을 선택하세요. (예: 백엔드, 레벨1, 자동차경주):";
 
-        System.out.print(menu);
+        System.out.println(menu);
 
         return readLine();
     }
 
-    public String readRematching() {
+    public static String readRematching() {
         String ask = "매칭 정보가 있습니다. 다시 매칭하시겠습니까?\n"
                 + "네 | 아니오\n";
 
