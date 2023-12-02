@@ -17,10 +17,15 @@ public class PairMatcher {
         crewRepository.shuffleCrews(selectedCrews);
         List<Pair> pairs = performPairMatching(selectedCrews);
 
-        // MatchingInfo 객체를 생성
-        MatchingInfo matchingInfo = new MatchingInfo(course, level, missionName, pairs);
+        Mission selectedMission = Mission.fromMissionNameAndLevel(missionName, level);
 
-        // matchingResults 리스트에 추가
+        if (selectedMission == null) {
+            System.out.println("Invalid mission name or level: " + missionName + " (Level: " + level.getName() + ")");
+            return;
+        }
+
+        MatchingInfo matchingInfo = new MatchingInfo(course, level, selectedMission, pairs);
+
         matchingResults.add(matchingInfo);
     }
 
