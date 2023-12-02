@@ -11,20 +11,13 @@ public class PairMatcher {
         this.crewRepository = crewRepository;
     }
 
-    public void matchPairs(Course course, Level level, String missionName) {
+    public void matchPairs(Course course, Level level, Mission mission) {
         List<Crew> selectedCrews = crewRepository.getCrewsByCourse(course);
 
         crewRepository.shuffleCrews(selectedCrews);
         List<Pair> pairs = performPairMatching(crewRepository.getCrews());
 
-        Mission selectedMission = Mission.fromMissionNameAndLevel(missionName, level);
-
-        if (selectedMission == null) {
-            System.out.println("Invalid mission name or level: " + missionName + " (Level: " + level.getName() + ")");
-            return;
-        }
-
-        MatchingInfo matchingInfo = new MatchingInfo(course, level, selectedMission, pairs);
+        MatchingInfo matchingInfo = new MatchingInfo(course, level, mission, pairs);
 
         matchingResults.add(matchingInfo);
     }
