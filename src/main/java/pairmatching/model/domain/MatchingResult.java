@@ -27,38 +27,43 @@ public class MatchingResult {
     private void putResults(Map<String, Crew> crews, List<String> shuffledCrew, String level) {
         for (int i = 0; i < shuffledCrew.size(); i += 2) {
             if (shuffledCrew.size() - i == 3) {
-                putSpecialResults(crews, shuffledCrew, level);
+                putSpecialResults(crews, shuffledCrew.subList(i, i+3), level);
                 break;
             }
             results.add(List.of(shuffledCrew.get(i), shuffledCrew.get(i + 1)));
-            crews.get(shuffledCrew.get(i)).addMatchingHistory(level, shuffledCrew.get(i + 1));
-            crews.get(shuffledCrew.get(i + 1)).addMatchingHistory(level, shuffledCrew.get(i));
+            addMatchingHistory(crews, shuffledCrew.get(i), shuffledCrew.get(i+1), level);
         }
     }
 
-    private void putSpecialResults(Map<String, Crew> crews, List<String> shuffledCrew, String level) {
-        int lastIndex = shuffledCrew.size() - 1;
-        results.add(
-                List.of(shuffledCrew.get(lastIndex), shuffledCrew.get(lastIndex - 1), shuffledCrew.get(lastIndex - 2)));
-        crews.get(shuffledCrew.get(lastIndex)).addMatchingHistory(level, shuffledCrew.get(lastIndex - 1));
-        crews.get(shuffledCrew.get(lastIndex)).addMatchingHistory(level, shuffledCrew.get(lastIndex - 2));
-        crews.get(shuffledCrew.get(lastIndex - 1)).addMatchingHistory(level, shuffledCrew.get(lastIndex));
-        crews.get(shuffledCrew.get(lastIndex - 1)).addMatchingHistory(level, shuffledCrew.get(lastIndex - 2));
-        crews.get(shuffledCrew.get(lastIndex - 2)).addMatchingHistory(level, shuffledCrew.get(lastIndex));
-        crews.get(shuffledCrew.get(lastIndex - 2)).addMatchingHistory(level, shuffledCrew.get(lastIndex - 1));
+    private void putSpecialResults(Map<String, Crew> crews, List<String> names, String level) {
+        results.add(names);
+        for (int i = 0; i < names.size(); i++) {
+            processNameCombinations(crews, names, level, i);
+        }
+    }
+
+    private void processNameCombinations(Map<String, Crew> crews, List<String> names, String level, int index) {
+        for (int j = 0; j < names.size(); j++) {
+            if (index != j) {
+                addMatchingHistory(crews, names.get(index), names.get(j), level);
+            }
+        }
+    }
+
+    private void addMatchingHistory(Map<String, Crew> crews, String firstName, String secondName, String level) {
+        crews.get(firstName).addMatchingHistory(level, secondName);
+        crews.get(secondName).addMatchingHistory(level, firstName);
     }
 
     private boolean hasMatchingHistory(Map<String, Crew> crews, List<String> shuffledCrew, String level) {
-        int shuffledCrewSize = shuffledCrew.size();
-        for (int i = 0; i < shuffledCrewSize; i += 2) {
-            String firstName = shuffledCrew.get(i);
-            String secondName = shuffledCrew.get(i + 1);
-            if (shuffledCrewSize - i == 3) {
-                return checkSpecialCase(crews, shuffledCrew.subList(i, i + 3), level);
-            }
-            if (checkNormalCase(crews, firstName, secondName, level)) {
+        int lastIndex = shuffledCrew.size() - 1;
+        for (int i = 0; i < lastIndex; i += 2) {
+            if (checkNormalCase(crews, shuffledCrew.get(i), shuffledCrew.get(i + 1), level)) {
                 return true;
             }
+        }
+        if (lastIndex % 2 == 0) {
+            return checkSpecialCase(crews, shuffledCrew.subList(lastIndex - 2, lastIndex + 1), level);
         }
         return false;
     }
