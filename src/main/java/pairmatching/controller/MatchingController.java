@@ -9,6 +9,10 @@ import pairmatching.view.OutputView;
 
 public class MatchingController {
     private final PairMatchingService matchingService;
+    private static final String FEATURE_OPTION_MATCHING = "1";
+    private static final String FEATURE_OPTION_SEARCHING = "2";
+    private static final String FEATURE_OPTION_RESET = "3";
+    private static final String FEATURE_OPTION_QUIT = "Q";
 
     public MatchingController(PairMatchingService matchingService) {
         this.matchingService = matchingService;
@@ -17,10 +21,9 @@ public class MatchingController {
     public void run() {
         while (true) {
             String input = InputView.getFeatureOption();
-            if (input.equals("Q")) {
+            if (input.equals(FEATURE_OPTION_QUIT)) {
                 break;
             }
-
             try {
                 InputValidator.validateFeatureOption(input);
                 deliverInputToService(input);
@@ -31,47 +34,63 @@ public class MatchingController {
     }
 
     private void deliverInputToService(String input) {
-        if (input.equals("1")) {
+        if (input.equals(FEATURE_OPTION_MATCHING)) {
             OutputView.printSequenceInformations();
-            deliverInputForMatching();
+            processMatching();
+            return;
         }
-        if (input.equals("2")) {
+        if (input.equals(FEATURE_OPTION_SEARCHING)) {
             OutputView.printSequenceInformations();
-            deliverInputForSearching();
+            processSearching();
+            return;
         }
-        if (input.equals("3")) {
-            matchingService.resetMatchingResults();
+        if (input.equals(FEATURE_OPTION_RESET)) {
+            processReset();
             OutputView.printResetCompleteMessage();
         }
     }
 
-    private void deliverInputForMatching() {
+    private void processMatching() {
         String sequenceOfOptions = InputView.getSequenceOfOptions();
         if (matchingService.hasResult(sequenceOfOptions)) {
-            String option = InputView.getRematchingOption();
-            InputValidator.validateRematchingOption(option);
-            if (!wantReMatching(option)) {
+            if (!shouldReMatch()) {
                 System.out.println();
-                deliverInputForMatching();
+                processMatching();
                 return;
             }
         }
+        startMatch(sequenceOfOptions);
+    }
+
+    private boolean shouldReMatch() {
+        String option = InputView.getRematchingOption();
+        InputValidator.validateRematchingOption(option);
+        return wantReMatching(option);
+    }
+
+    private void startMatch(String sequenceOfOptions) {
         List<String> options = Separator.separateByComma(sequenceOfOptions);
         InputValidator.validateSequenceOfOptions(options);
+
         matchingService.makeMatching(sequenceOfOptions, options);
         OutputView.printMatchingResults(matchingService.getMatchingResult(sequenceOfOptions));
     }
 
-    private boolean wantReMatching(String option) {
-        return option.equals("네");
-    }
-
-    private void deliverInputForSearching() {
+    private void processSearching() {
         String sequenceOfOptions = InputView.getSequenceOfOptions();
         if (!matchingService.hasResult(sequenceOfOptions)) {
             OutputView.printNoMatchingMessage();
             return;
         }
         OutputView.printMatchingResults(matchingService.getMatchingResult(sequenceOfOptions));
+    }
+
+    private void processReset() {
+        matchingService.resetMatchingResults();
+        OutputView.printResetCompleteMessage();
+    }
+
+    private boolean wantReMatching(String option) {
+        return option.equals("네");
     }
 }
