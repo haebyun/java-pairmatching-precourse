@@ -16,16 +16,10 @@ public class Crew {
         this.course = course;
     }
 
-    public void addMatchingHistory(String level, String name) {
-        if (!matchingHistories.containsKey(level)) {
-            Set<String> set = new HashSet<>();
-            set.add(name);
-            matchingHistories.put(level, set);
-            return;
-        }
-        Set<String> updatedSet = matchingHistories.get(level);
-        updatedSet.add(name);
-        matchingHistories.replace(level, updatedSet);
+    public void addMatchingHistory(String level, String otherName) {
+        matchingHistories
+                .computeIfAbsent(level, key -> new HashSet<>())
+                .add(otherName);
     }
 
     public boolean hasMatchingHistory(String level, String name) {
