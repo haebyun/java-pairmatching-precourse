@@ -20,28 +20,28 @@ public class MatchingController {
             if (input.equals("Q")) {
                 break;
             }
-            InputValidator.validateFeatureOption(input);
-            deliverInputToService(input);
+
+            try {
+                InputValidator.validateFeatureOption(input);
+                deliverInputToService(input);
+            } catch (IllegalArgumentException e) {
+                OutputView.printErrorMessage(e.getMessage());
+            }
         }
     }
 
     private void deliverInputToService(String input) {
-        try {
-            if (input.equals("1")) {
-                OutputView.printSequenceInformations();
-                deliverInputForMatching();
-            }
-            if (input.equals("2")) {
-                OutputView.printSequenceInformations();
-                deliverInputForSearching();
-            }
-            if (input.equals("3")) {
-                matchingService.resetMatchingResults();
-                OutputView.printResetCompleteMessage();
-            }
-        } catch (IllegalArgumentException e) {
-            OutputView.printErrorMessage(e.getMessage());
-            deliverInputToService(input);
+        if (input.equals("1")) {
+            OutputView.printSequenceInformations();
+            deliverInputForMatching();
+        }
+        if (input.equals("2")) {
+            OutputView.printSequenceInformations();
+            deliverInputForSearching();
+        }
+        if (input.equals("3")) {
+            matchingService.resetMatchingResults();
+            OutputView.printResetCompleteMessage();
         }
     }
 
