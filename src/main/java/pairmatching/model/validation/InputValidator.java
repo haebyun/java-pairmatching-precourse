@@ -8,13 +8,13 @@ import pairmatching.model.constants.Level;
 public class InputValidator {
     public static void validateFeatureOption(String input) {
         if(!Pattern.matches("^[1-3]$", input)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("잘못된 입력입니다.");
         }
     }
 
     public static void validateRematchingOption(String option) {
         if(!option.equals("네") && !option.equals("아니오")) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("잘못된 입력입니다.");
         }
     }
 
@@ -29,19 +29,19 @@ public class InputValidator {
 
     private static void validateInvalidCourse(String course) {
         if(!Course.isCourse(course)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("잘못된 입력입니다.");
         }
     }
 
     private static void validateInvalidLevel(String level) {
         if(!Level.isActualLevel(level)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("잘못된 입력입니다.");
         }
     }
 
     private static void validateInvalidMission(String mission) {
         if(!Level.isActualMission(mission)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("잘못된 입력입니다.");
         }
     }
 

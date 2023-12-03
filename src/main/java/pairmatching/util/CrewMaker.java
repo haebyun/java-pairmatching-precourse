@@ -31,7 +31,7 @@ public class CrewMaker {
             }
             return crews;
         } catch (IOException e) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("잘못된 입력입니다.");
         }
     }
 }
