@@ -29,7 +29,7 @@ public class InputValidator {
     }
 
     private static void validateInvalidOptionsSize(List<String> options) {
-        if (options.size() != 2) {
+        if (options.size() != 3) {
             throw new IllegalArgumentException("잘못된 입력입니다.");
         }
     }
