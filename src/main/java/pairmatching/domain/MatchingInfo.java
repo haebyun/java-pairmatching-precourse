@@ -20,14 +20,6 @@ public class MatchingInfo {
         return course;
     }
 
-    public Level getLevel() {
-        return level;
-    }
-
-    public Mission getMission() {
-        return mission;
-    }
-
     public void updatePairs(List<Pair> pairs) {
         this.pairs = pairs;
     }
