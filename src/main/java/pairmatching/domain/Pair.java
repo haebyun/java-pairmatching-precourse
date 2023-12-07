@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Pair {
-    private List<Crew> members;
+    private final List<Crew> members;
 
     public Pair(Crew... members) {
         this.members = new ArrayList<>(Arrays.asList(members));

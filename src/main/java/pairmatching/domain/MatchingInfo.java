@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MatchingInfo {
-    private Course course;
-    private Level level;
-    private Mission mission;
+    private final Course course;
+    private final Level level;
+    private final Mission mission;
     private List<Pair> pairs;
 
     public MatchingInfo(Course course, Level level, Mission mission, List<Pair> pairs) {
@@ -28,10 +28,6 @@ public class MatchingInfo {
         return mission;
     }
 
-    public List<Pair> getPairs() {
-        return pairs;
-    }
-
     public void updatePairs(List<Pair> pairs) {
         this.pairs = pairs;
     }
@@ -41,5 +37,11 @@ public class MatchingInfo {
         return pairs.stream()
                 .map(Object::toString)
                 .collect(Collectors.joining("\n"));
+    }
+
+    public boolean matchesCourseLevelMission(CourseLevelMissionInput courseLevelMissionInput) {
+        return this.course == courseLevelMissionInput.getCourse() &&
+                this.level == courseLevelMissionInput.getLevel() &&
+                this.mission == courseLevelMissionInput.getMission();
     }
 }
