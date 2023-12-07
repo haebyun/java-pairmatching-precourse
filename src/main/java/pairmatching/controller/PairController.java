@@ -4,9 +4,11 @@ import pairmatching.domain.*;
 import pairmatching.view.InputView;
 import pairmatching.view.OutputView;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
+// 메뉴 입력 처리 - Map 이용
 public class PairController {
     private static final String PAIR_MENU_OPTION = "1";
     private static final String SEARCH_MENU_OPTION = "2";
@@ -16,12 +18,17 @@ public class PairController {
     private static final String BACKEND_FILE_PATH = "src/main/resources/backend-crew.md";
     private static final String FRONTEND_FILE_PATH = "src/main/resources/frontend-crew.md";
 
-    // 리팩토링시 아래 필드들 없애기
     private final CrewRepository crewRepository = new CrewRepository();
     private final PairMatcher pairMatcher = new PairMatcher(crewRepository);
+    private final Map<String, Runnable> menuOptions = new HashMap<>();
 
-    // supplier이용해 재입력 로직 구현
-    // 현재 네/아니오 선택 시에도 메뉴 입력으로 넘어가짐 -> 리팩토링 필요
+    public PairController() {
+        menuOptions.put(PAIR_MENU_OPTION, this::handlePairMenuOption);
+        menuOptions.put(SEARCH_MENU_OPTION, this::handleSearchMenuOption);
+        menuOptions.put(INITIALIZE_MENU_OPTION, this::handleInitializeMenuOption);
+        menuOptions.put(QUIT_MENU_OPTION, () -> {});
+    }
+
     public void run() {
         retryUntilSuccess(() -> {
             crewRepository.loadCrewsFromFiles(BACKEND_FILE_PATH, FRONTEND_FILE_PATH);
@@ -33,25 +40,36 @@ public class PairController {
     private void pairMatchLoop() {
         while (true) {
             String menuInput = InputView.selectMenuOption();
-            if (menuInput.equals(PAIR_MENU_OPTION)) {
-                matchPair();
-                continue;
+            Runnable action = menuOptions.get(menuInput);
+            if (action != null) {
+                action.run();
+                if (menuInput.equals(QUIT_MENU_OPTION)) break;
+            } else {
+                System.out.println(INVALID_INPUT_MESSAGE);
             }
-            if (menuInput.equals(SEARCH_MENU_OPTION)) {
-                searchPair();
-                continue;
-            }
-            if (menuInput.equals(INITIALIZE_MENU_OPTION)) {
-                initializePair();
-                continue;
-            }
-            if (menuInput.equals(QUIT_MENU_OPTION)) {
-                return;
-            }
-            throw new IllegalArgumentException(INVALID_INPUT_MESSAGE);
         }
     }
 
+    private void handlePairMenuOption() {
+        retryUntilSuccess(() -> {
+            matchPair();
+            return null;
+        });
+    }
+
+    private void handleSearchMenuOption() {
+        retryUntilSuccess(() -> {
+            searchPair();
+            return null;
+        });
+    }
+
+    private void handleInitializeMenuOption() {
+        retryUntilSuccess(() -> {
+            initializePair();
+            return null;
+        });
+    }
 
     private void initializePair() {
         pairMatcher.initializeMatchingResults();
@@ -65,22 +83,31 @@ public class PairController {
 
     private void matchPair() {
         CourseLevelMissionInput selectedCourseLevelMission = readAndParseCourseLevelMission();
-        boolean matchingInfoExists = pairMatcher.hasPreviousMatchingInfo(selectedCourseLevelMission);
+        if (checkAndHandleRematching(selectedCourseLevelMission)) {
+            return;
+        }
+        performPairMatching(selectedCourseLevelMission);
+    }
 
-        if (matchingInfoExists) {
+    private boolean checkAndHandleRematching(CourseLevelMissionInput selectedCourseLevelMission) {
+        if (pairMatcher.hasPreviousMatchingInfo(selectedCourseLevelMission)) {
             String rematchingInput = InputView.readRematching();
             if (rematchingInput.equals("아니오")) {
-                return;
+                return true;
             }
             if (!rematchingInput.equals("네")) {
                 throw new IllegalArgumentException(INVALID_INPUT_MESSAGE);
             }
         }
-        pairMatcher.matchPairs(selectedCourseLevelMission);
+        return false;
+    }
 
+    private void performPairMatching(CourseLevelMissionInput selectedCourseLevelMission) {
+        pairMatcher.matchPairs(selectedCourseLevelMission);
         MatchingInfo matchingResult = getMatchingInfo(selectedCourseLevelMission);
         OutputView.outputPairMatching(matchingResult.toString());
     }
+
 
     private CourseLevelMissionInput readAndParseCourseLevelMission() {
         String courseLevelMission = InputView.readCourseLevelMission();
@@ -95,7 +122,7 @@ public class PairController {
     }
 
     static <T> T retryUntilSuccess(Supplier<T> supplier) {
-        while(true) {
+        while (true) {
             try {
                 return supplier.get();
             } catch (IllegalArgumentException e) {
