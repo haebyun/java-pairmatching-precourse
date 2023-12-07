@@ -6,6 +6,7 @@ import pairmatching.view.OutputView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 // 메뉴 입력 처리 - Map 이용
@@ -77,48 +78,46 @@ public class PairController {
 
     private void searchPair() {
         CourseLevelMissionInput selectedCourseLevelMission = readAndParseCourseLevelMission();
-        MatchingInfo matchingResult = getMatchingInfo(selectedCourseLevelMission);
+        Optional<MatchingInfo> matchingResult = getMatchingInfo(selectedCourseLevelMission);
         OutputView.outputPairMatching(matchingResult.toString());
     }
 
     private void matchPair() {
         CourseLevelMissionInput selectedCourseLevelMission = readAndParseCourseLevelMission();
-        if (checkAndHandleRematching(selectedCourseLevelMission)) {
-            return;
-        }
-        performPairMatching(selectedCourseLevelMission);
+        retryUntilSuccess(() -> {
+            if (checkAndHandleRematching(selectedCourseLevelMission)) {
+                performPairMatching(selectedCourseLevelMission);
+            }
+            return null;
+        });
     }
 
     private boolean checkAndHandleRematching(CourseLevelMissionInput selectedCourseLevelMission) {
         if (pairMatcher.hasPreviousMatchingInfo(selectedCourseLevelMission)) {
             String rematchingInput = InputView.readRematching();
             if (rematchingInput.equals("아니오")) {
-                return true;
+                return false;
             }
             if (!rematchingInput.equals("네")) {
                 throw new IllegalArgumentException(INVALID_INPUT_MESSAGE);
             }
         }
-        return false;
+        return true; // 리매치 아닌 경우(첫번째 매치 시도) true
     }
 
     private void performPairMatching(CourseLevelMissionInput selectedCourseLevelMission) {
         pairMatcher.matchPairs(selectedCourseLevelMission);
-        MatchingInfo matchingResult = getMatchingInfo(selectedCourseLevelMission);
+        Optional<MatchingInfo> matchingResult = getMatchingInfo(selectedCourseLevelMission);
         OutputView.outputPairMatching(matchingResult.toString());
     }
-
 
     private CourseLevelMissionInput readAndParseCourseLevelMission() {
         String courseLevelMission = InputView.readCourseLevelMission();
         return InputParser.parseCourseLevelMission(courseLevelMission);
     }
 
-    private MatchingInfo getMatchingInfo(CourseLevelMissionInput selectedCourseLevelMission) {
-        Course selectedCourse = selectedCourseLevelMission.getCourse();
-        Level selectedLevel = selectedCourseLevelMission.getLevel();
-        Mission selectedMission = selectedCourseLevelMission.getMission();
-        return pairMatcher.getMatchingInfoByCourseLevelMission(selectedCourse, selectedLevel, selectedMission);
+    private Optional<MatchingInfo> getMatchingInfo(CourseLevelMissionInput selectedCourseLevelMission) {
+        return pairMatcher.findMatchingInfo(selectedCourseLevelMission);
     }
 
     static <T> T retryUntilSuccess(Supplier<T> supplier) {
