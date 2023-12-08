@@ -2,7 +2,6 @@ package pairmatching.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class PairMatcher {
     private final List<MatchingInfo> matchingResults = new ArrayList<>();
@@ -31,9 +30,8 @@ public class PairMatcher {
         return matchingResults.stream()
                 .filter(matchingInfo -> matchingInfo.matchesCourseLevelMission(courseLevelMissionInput))
                 .findFirst()
-                .orElse(null); // 찾지 못한 경우 null 반환
+                .orElse(null);
     }
-
 
     private void updateExistingMatchingInfo(MatchingInfo matchingInfo) {
         List<Crew> selectedCrews = crewRepository.getCrewsByCourse(matchingInfo.getCourse());
