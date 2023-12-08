@@ -18,6 +18,8 @@ public class PairController {
     private static final String INVALID_INPUT_MESSAGE = "[ERROR] 잘못된 입력입니다.";
     private static final String BACKEND_FILE_PATH = "src/main/resources/backend-crew.md";
     private static final String FRONTEND_FILE_PATH = "src/main/resources/frontend-crew.md";
+    private static final String INPUT_NO = "아니오";
+    private static final String INPUT_YES = "네";
 
     private final CrewRepository crewRepository = new CrewRepository();
     private final PairMatcher pairMatcher = new PairMatcher(crewRepository);
@@ -95,14 +97,14 @@ public class PairController {
     private boolean checkAndHandleRematching(CourseLevelMissionInput selectedCourseLevelMission) {
         if (pairMatcher.hasPreviousMatchingInfo(selectedCourseLevelMission)) {
             String rematchingInput = InputView.readRematching();
-            if (rematchingInput.equals("아니오")) {
+            if (rematchingInput.equals(INPUT_NO)) {
                 return false;
             }
-            if (!rematchingInput.equals("네")) {
+            if (!rematchingInput.equals(INPUT_YES)) {
                 throw new IllegalArgumentException(INVALID_INPUT_MESSAGE);
             }
         }
-        return true; // 리매치 아닌 경우(첫번째 매치 시도) true
+        return true;
     }
 
     private void performPairMatching(CourseLevelMissionInput selectedCourseLevelMission) {

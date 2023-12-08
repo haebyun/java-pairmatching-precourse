@@ -27,7 +27,6 @@ public class PairMatcher {
         updateExistingMatchingInfo(existingMatchingInfo.get());
     }
 
-
     public Optional<MatchingInfo> findMatchingInfo(CourseLevelMissionInput courseLevelMissionInput) {
         return matchingResults.stream()
                 .filter(matchingInfo -> matchingInfo.matchesCourseLevelMission(courseLevelMissionInput))

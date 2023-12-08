@@ -19,7 +19,7 @@ public class InputParser {
     }
 
     private static String[] splitInput(String input) {
-        return input.split(", ");
+        return input.split(", ", -1);
     }
 
     private static void validateInputParts(String[] parts) {

@@ -30,10 +30,6 @@ public class CrewRepository {
         }
     }
 
-    public List<Crew> getCrews() {
-        return crews;
-    }
-
     public void shuffleCrews(List<Crew> selectedCrews) {
         this.crews = Randoms.shuffle(selectedCrews);
     }
