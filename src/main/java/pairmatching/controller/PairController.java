@@ -80,7 +80,7 @@ public class PairController {
 
     private void searchPair() {
         CourseLevelMissionInput selectedCourseLevelMission = readAndParseCourseLevelMission();
-        Optional<MatchingInfo> matchingResult = getMatchingInfo(selectedCourseLevelMission);
+        MatchingInfo matchingResult = getMatchingInfo(selectedCourseLevelMission);
         OutputView.outputPairMatching(matchingResult.toString());
     }
 
@@ -109,7 +109,7 @@ public class PairController {
 
     private void performPairMatching(CourseLevelMissionInput selectedCourseLevelMission) {
         pairMatcher.matchPairs(selectedCourseLevelMission);
-        Optional<MatchingInfo> matchingResult = getMatchingInfo(selectedCourseLevelMission);
+        MatchingInfo matchingResult = getMatchingInfo(selectedCourseLevelMission);
         OutputView.outputPairMatching(matchingResult.toString());
     }
 
@@ -118,7 +118,7 @@ public class PairController {
         return InputParser.parseCourseLevelMission(courseLevelMission);
     }
 
-    private Optional<MatchingInfo> getMatchingInfo(CourseLevelMissionInput selectedCourseLevelMission) {
+    private MatchingInfo getMatchingInfo(CourseLevelMissionInput selectedCourseLevelMission) {
         return pairMatcher.findMatchingInfo(selectedCourseLevelMission);
     }
 

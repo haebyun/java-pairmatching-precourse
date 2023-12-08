@@ -13,25 +13,27 @@ public class PairMatcher {
     }
 
     public boolean hasPreviousMatchingInfo(CourseLevelMissionInput courseLevelMissionInput) {
-        return findMatchingInfo(courseLevelMissionInput).isPresent();
+        return findMatchingInfo(courseLevelMissionInput) != null;
     }
 
     public void matchPairs(CourseLevelMissionInput courseLevelMissionInput) {
-        Optional<MatchingInfo> existingMatchingInfo = findMatchingInfo(courseLevelMissionInput);
+        MatchingInfo existingMatchingInfo = findMatchingInfo(courseLevelMissionInput);
 
-        if (existingMatchingInfo.isEmpty()) {
+        if (existingMatchingInfo == null) {
             createNewMatchingInfo(courseLevelMissionInput);
             return;
         }
-
-        updateExistingMatchingInfo(existingMatchingInfo.get());
+        updateExistingMatchingInfo(existingMatchingInfo);
     }
 
-    public Optional<MatchingInfo> findMatchingInfo(CourseLevelMissionInput courseLevelMissionInput) {
+
+    public MatchingInfo findMatchingInfo(CourseLevelMissionInput courseLevelMissionInput) {
         return matchingResults.stream()
                 .filter(matchingInfo -> matchingInfo.matchesCourseLevelMission(courseLevelMissionInput))
-                .findFirst();
-      }
+                .findFirst()
+                .orElse(null); // 찾지 못한 경우 null 반환
+    }
+
 
     private void updateExistingMatchingInfo(MatchingInfo matchingInfo) {
         List<Crew> selectedCrews = crewRepository.getCrewsByCourse(matchingInfo.getCourse());
