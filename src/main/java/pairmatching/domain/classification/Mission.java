@@ -1,4 +1,4 @@
-package pairmatching.domain;
+package pairmatching.domain.classification;
 
 public enum Mission {
     CAR_RACING(Level.LEVEL1, "자동차경주"),
@@ -12,6 +12,7 @@ public enum Mission {
     PERFORMANCE_IMPROVEMENT(Level.LEVEL4, "성능개선"),
     DEPLOYMENT(Level.LEVEL4, "배포");
 
+    private static final String INVALID_MISSION_MESSAGE = "[ERROR] 잘못된 미션 이름입니다.";
     private final Level level;
     private final String missionName;
 
@@ -34,6 +35,6 @@ public enum Mission {
                 return mission;
             }
         }
-        return null;
+        throw new IllegalArgumentException(INVALID_MISSION_MESSAGE);
     }
 }

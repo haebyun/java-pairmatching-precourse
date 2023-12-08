@@ -1,5 +1,7 @@
 package pairmatching.domain;
 
+import pairmatching.domain.classification.Course;
+
 public class Crew {
     private final Course course;
     private final String name;

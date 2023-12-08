@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import camp.nextstep.edu.missionutils.Randoms;
+import pairmatching.domain.classification.Course;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.IOException;

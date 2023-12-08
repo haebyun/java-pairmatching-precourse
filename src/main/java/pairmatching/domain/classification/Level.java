@@ -1,4 +1,4 @@
-package pairmatching.domain;
+package pairmatching.domain.classification;
 
 public enum Level {
     LEVEL1("레벨1"),
@@ -7,7 +7,8 @@ public enum Level {
     LEVEL4("레벨4"),
     LEVEL5("레벨5");
 
-    private String name;
+    private static final String INVALID_LEVEL_MESSAGE = "[ERROR] 잘못된 레벨입니다.";
+    private final String name;
 
     Level(String name) {
         this.name = name;
@@ -23,6 +24,6 @@ public enum Level {
                 return level;
             }
         }
-        return null;
+        throw new IllegalArgumentException(INVALID_LEVEL_MESSAGE);
     }
 }

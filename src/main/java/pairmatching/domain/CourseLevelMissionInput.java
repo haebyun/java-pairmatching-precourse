@@ -1,5 +1,9 @@
 package pairmatching.domain;
 
+import pairmatching.domain.classification.Course;
+import pairmatching.domain.classification.Level;
+import pairmatching.domain.classification.Mission;
+
 public class CourseLevelMissionInput {
     private final Course course;
     private final Level level;

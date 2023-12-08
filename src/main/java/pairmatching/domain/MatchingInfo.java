@@ -1,5 +1,9 @@
 package pairmatching.domain;
 
+import pairmatching.domain.classification.Course;
+import pairmatching.domain.classification.Level;
+import pairmatching.domain.classification.Mission;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
