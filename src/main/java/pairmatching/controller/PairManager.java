@@ -6,6 +6,7 @@ import pairmatching.controller.dto.Stage;
 import pairmatching.domain.constants.GameCommand;
 import pairmatching.domain.constants.Level;
 import pairmatching.domain.constants.Mission;
+import pairmatching.domain.constants.RematchCommand;
 import pairmatching.global.exception.CustomException;
 import pairmatching.global.exception.ErrorMessage;
 import pairmatching.global.util.CustomFileReader;
@@ -42,6 +43,8 @@ public class PairManager {
 
     /**
      * 페어를 매칭하는 기능
+     * <p>
+     * 매칭 정보가 이미 있는 경우, 사용자가 종료를 입력하면 바로 종료한다.
      */
     private void match() {
         outputView.printCourseAndMission();
@@ -49,7 +52,10 @@ public class PairManager {
             return readStage();
         });
         if (pairService.hasMatching(stage)) {
-            inputView.readRematchingOrQuit();
+            RematchCommand rematchCommand = inputView.readRematchingOrQuit();
+            if (rematchCommand.equals(RematchCommand.QUIT)) {
+                return;
+            }
         }
         pairService.save(stage);
     }

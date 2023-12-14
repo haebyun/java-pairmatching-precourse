@@ -67,4 +67,11 @@ public class PairService {
         String third = names.get(size - 3);
         matching.addTriple(first, second, third);
     }
+
+    /**
+     * 이미 매칭되어 있는지 확인하는 메소드
+     */
+    public boolean hasMatching(Stage stage) {
+        return matchings.hasMatching(stage.course(), stage.mission());
+    }
 }

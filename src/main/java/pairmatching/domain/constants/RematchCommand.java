@@ -5,8 +5,8 @@ import pairmatching.global.exception.CustomException;
 import pairmatching.global.exception.ErrorMessage;
 
 public enum RematchCommand {
-    YES("네"),
-    NO("아니오");
+    REMATCH("네"),
+    QUIT("아니오");
 
     private final String command;
 
