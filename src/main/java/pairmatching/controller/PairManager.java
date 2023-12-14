@@ -40,21 +40,35 @@ public class PairManager {
         }
     }
 
+    /**
+     * 페어를 매칭하는 기능
+     */
     private void match() {
         outputView.printCourseAndMission();
         Stage stage = retry(() -> {
-            Stage _stage = inputView.readStage();
-            if (doesNotContains(_stage.level(), _stage.mission())) {
-                throw CustomException.from(ErrorMessage.NOT_MATCHED_MISSION);
-            }
-            return _stage;
+            return readStage();
         });
-        pairService.execute(stage);
+        if (pairService.hasMatching(stage)) {
+            inputView.readRematchingOrQuit();
+        }
+        pairService.save(stage);
+    }
+
+    private Stage readStage() {
+        Stage stage = inputView.readStage();
+        if (doesNotContains(stage.level(), stage.mission())) {
+            throw CustomException.from(ErrorMessage.NOT_MATCHED_MISSION);
+        }
+        return stage;
     }
 
     private boolean doesNotContains(Level level, Mission mission) {
         return level.getMissions().contains(mission);
     }
+
+    /**
+     * 페어를 조회하는 기능
+     */
 
     private static <T> T retry(Supplier<T> supplier) {
         while (true) {

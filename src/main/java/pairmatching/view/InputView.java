@@ -7,6 +7,7 @@ import pairmatching.domain.constants.Course;
 import pairmatching.domain.constants.GameCommand;
 import pairmatching.domain.constants.Level;
 import pairmatching.domain.constants.Mission;
+import pairmatching.domain.constants.RematchCommand;
 import pairmatching.view.console.ConsoleReader;
 import pairmatching.view.console.ConsoleWriter;
 
@@ -26,6 +27,9 @@ public class InputView {
         );
     }
 
+    /**
+     * 과정, 레벨, 미션을 입력하는 메소드
+     */
     public Stage readStage() {
         ConsoleWriter.printlnMessage(READ_MISSION_NOTICE);
         ConsoleWriter.printlnMessage(READ_MISSION_EXAMPLE);
@@ -47,4 +51,12 @@ public class InputView {
     }
 
 
+    /**
+     * 이미 매칭 정보가 있는 경우 다시 매칭할 지 입력하는 메소드
+     */
+    public RematchCommand readRematchingOrQuit() {
+        ConsoleWriter.printlnMessage("매칭 정보가 있습니다. 다시 매칭하시겠습니까?");
+        ConsoleWriter.printlnMessage("네 | 아니오");
+        return RematchCommand.from(ConsoleReader.enterMessage());
+    }
 }
