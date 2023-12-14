@@ -9,7 +9,7 @@ import pairmatching.domain.constants.Mission;
 import pairmatching.global.exception.CustomException;
 import pairmatching.global.exception.ErrorMessage;
 import pairmatching.global.util.CustomFileReader;
-import pairmatching.service.PairMatcher;
+import pairmatching.service.PairService;
 import pairmatching.view.InputView;
 import pairmatching.view.OutputView;
 import pairmatching.view.console.ConsoleWriter;
@@ -17,7 +17,7 @@ import pairmatching.view.console.ConsoleWriter;
 public class PairManager {
     private final InputView inputView;
     private final OutputView outputView;
-    private final PairMatcher pairMatcher;
+    private final PairService pairService;
 
     public PairManager(InputView inputView, OutputView outputView) {
         this.inputView = inputView;
@@ -25,7 +25,7 @@ public class PairManager {
 
         List<String> backend = CustomFileReader.readFile("resources/backend-crew.md");
         List<String> frontend = CustomFileReader.readFile("resources/frontend-crew.md");
-        this.pairMatcher = new PairMatcher(backend, frontend);
+        this.pairService = new PairService(backend, frontend);
     }
 
     public void run() {
@@ -49,7 +49,7 @@ public class PairManager {
             }
             return _stage;
         });
-        pairMatcher.execute(stage);
+        pairService.execute(stage);
     }
 
     private boolean doesNotContains(Level level, Mission mission) {
