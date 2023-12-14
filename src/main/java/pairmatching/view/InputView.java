@@ -2,7 +2,11 @@ package pairmatching.view;
 
 import java.util.Arrays;
 import java.util.List;
+import pairmatching.controller.dto.Stage;
+import pairmatching.domain.constants.Course;
 import pairmatching.domain.constants.GameCommand;
+import pairmatching.domain.constants.Level;
+import pairmatching.domain.constants.Mission;
 import pairmatching.view.console.ConsoleReader;
 import pairmatching.view.console.ConsoleWriter;
 
@@ -22,11 +26,16 @@ public class InputView {
         );
     }
 
-    public List<String> readMission() {
+    public Stage readStage() {
         ConsoleWriter.printlnMessage(READ_MISSION_NOTICE);
         ConsoleWriter.printlnMessage(READ_MISSION_EXAMPLE);
         String message = ConsoleReader.enterMessage();
-        return parseStringToList(message, SEPARATOR);
+        List<String> infos = parseStringToList(message, SEPARATOR);
+        return new Stage(
+                Course.from(infos.get(0)),
+                Level.from(infos.get(1)),
+                Mission.from(infos.get(2))
+        );
     }
 
     private static List<String> parseStringToList(String message, String separator) {
