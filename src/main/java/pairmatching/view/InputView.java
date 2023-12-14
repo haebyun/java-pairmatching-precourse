@@ -11,15 +11,10 @@ public class InputView {
     private static final String SEPARATOR = ", ";
 
     public List<String> readMission() {
-        printCourseAndMissions();
         ConsoleWriter.printlnMessage(READ_MISSION_NOTICE);
         ConsoleWriter.printlnMessage(READ_MISSION_EXAMPLE);
         String message = ConsoleReader.enterMessage();
         return parseStringToList(message, SEPARATOR);
-    }
-
-    private void printCourseAndMissions() {
-        
     }
 
     private static List<String> parseStringToList(String message, String separator) {
