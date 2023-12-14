@@ -52,4 +52,8 @@ public class OutputView {
     public void printOverMatching() {
         ConsoleWriter.printlnMessage("[ERROR] 매칭에 실패하여 다시 미션을 선택합니다.");
     }
+
+    public void printNoMatching() {
+        ConsoleWriter.printlnMessage("[ERROR] 매칭 이력이 없습니다.");
+    }
 }

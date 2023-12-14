@@ -81,4 +81,11 @@ public class PairService {
     public boolean hasMatching(Stage stage) {
         return matchings.hasMatching(stage.course(), stage.mission());
     }
+
+    /**
+     * 페어를 조회하는 메소드
+     */
+    public Optional<Matching> getMatching(Stage stage) {
+        return matchings.getMatching(stage.course(), stage.mission());
+    }
 }

@@ -40,6 +40,9 @@ public class PairManager {
             if (gameCommand.equals(GameCommand.MATCHING)) {
                 match();
             }
+            if (gameCommand.equals(GameCommand.INQUIRE)) {
+                inquire();
+            }
         }
     }
 
@@ -97,6 +100,20 @@ public class PairManager {
     /**
      * 페어를 조회하는 기능
      */
+    public void inquire() {
+        boolean isRunning = true;
+        while (isRunning) {
+            outputView.printCourseAndMission();
+            Stage stage = retry(() -> {
+                return readStage();
+            });
+            Optional<Matching> matching = pairService.getMatching(stage);
+            if (matching.isPresent()) {
+                outputView.printMatching(matching.get());
+            }
+            outputView.printNoMatching();
+        }
+    }
 
     private static <T> T retry(Supplier<T> supplier) {
         while (true) {

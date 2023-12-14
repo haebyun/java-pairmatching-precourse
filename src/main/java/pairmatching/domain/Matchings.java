@@ -3,6 +3,7 @@ package pairmatching.domain;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import pairmatching.controller.dto.Stage;
 import pairmatching.domain.constants.Course;
 import pairmatching.domain.constants.Mission;
@@ -32,5 +33,13 @@ public class Matchings {
             }
         }
         return false;
+    }
+
+    public Optional<Matching> getMatching(Course course, Mission mission) {
+        CourseMission courseMission = new CourseMission(course, mission);
+        if (matchings.containsKey(courseMission)) {
+            return Optional.of(matchings.get(courseMission));
+        }
+        return Optional.empty();
     }
 }
