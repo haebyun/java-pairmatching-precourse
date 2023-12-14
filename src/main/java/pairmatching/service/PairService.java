@@ -2,6 +2,7 @@ package pairmatching.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import pairmatching.controller.dto.Stage;
 import pairmatching.domain.Matching;
 import pairmatching.domain.Matchings;
@@ -21,11 +22,17 @@ public class PairService {
 
     /**
      * 페어 매칭을 수행하는 메서드
+     *
+     * @return 매칭에 성공하면 Matching 객체를, 실패하면 Optional.empty()를 반환
      */
-    public void save(Stage stage) {
+    public Optional<Matching> save(Stage stage) {
         List<String> shuffle = RandomShuffler.shuffle(getTarget(stage));
         Matching matching = match(shuffle);
+        if (matchings.isDuplicatedMatching(stage, matching)) {
+            return Optional.empty();
+        }
         matchings.add(stage, matching);
+        return Optional.of(matching);
     }
 
     private List<String> getTarget(Stage stage) {

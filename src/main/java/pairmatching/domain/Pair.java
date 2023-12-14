@@ -18,4 +18,13 @@ public class Pair {
         pair.add(second);
         pair.add(third);
     }
+
+    public boolean contains(Set<String> target) {
+        Set<String> intersect = new HashSet<>(pair);
+        return intersect.retainAll(target);
+    }
+
+    public Set<String> getPair() {
+        return pair;
+    }
 }

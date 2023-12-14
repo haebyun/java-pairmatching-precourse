@@ -19,4 +19,25 @@ public class Matching {
         Pair pair = new Pair(first, second, third);
         matching.add(pair);
     }
+
+    /**
+     * 두 매칭에서 중복되는 페어가 있는 지 검사하는 메소드
+     */
+    public boolean duplicated(Matching target) {
+        for (Pair pair : matching) {
+            if (target.contains(pair)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean contains(Pair target) {
+        for (Pair pair : matching) {
+            if (pair.contains(target.getPair())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

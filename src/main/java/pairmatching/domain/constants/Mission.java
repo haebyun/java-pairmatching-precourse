@@ -28,6 +28,10 @@ public enum Mission {
         return name;
     }
 
+    public Level getLevel() {
+        return level;
+    }
+
     /**
      * 이름을 통해 Mission 객체를 조회하는 메소드
      */

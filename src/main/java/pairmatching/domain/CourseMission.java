@@ -2,6 +2,7 @@ package pairmatching.domain;
 
 import java.util.Objects;
 import pairmatching.domain.constants.Course;
+import pairmatching.domain.constants.Level;
 import pairmatching.domain.constants.Mission;
 
 /**
@@ -31,5 +32,9 @@ public class CourseMission {
     @Override
     public int hashCode() {
         return Objects.hash(course, mission);
+    }
+
+    public boolean equalLevel(Level level) {
+        return mission.getLevel().equals(level);
     }
 }

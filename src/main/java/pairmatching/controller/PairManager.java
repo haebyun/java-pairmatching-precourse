@@ -1,8 +1,10 @@
 package pairmatching.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 import pairmatching.controller.dto.Stage;
+import pairmatching.domain.Matching;
 import pairmatching.domain.constants.GameCommand;
 import pairmatching.domain.constants.Level;
 import pairmatching.domain.constants.Mission;
@@ -47,17 +49,37 @@ public class PairManager {
      * 매칭 정보가 이미 있는 경우, 사용자가 종료를 입력하면 바로 종료한다.
      */
     private void match() {
-        outputView.printCourseAndMission();
-        Stage stage = retry(() -> {
-            return readStage();
-        });
-        if (pairService.hasMatching(stage)) {
-            RematchCommand rematchCommand = inputView.readRematchingOrQuit();
-            if (rematchCommand.equals(RematchCommand.QUIT)) {
-                return;
+        boolean isRunning = true;
+        while (isRunning) {
+            outputView.printCourseAndMission();
+            Stage stage = retry(() -> {
+                return readStage();
+            });
+            isRunning = tryMatch(stage);
+        }
+    }
+
+    private boolean tryMatch(Stage stage) {
+        for (int i = 0; i < 3; i++) {
+            if (pairService.hasMatching(stage) && isQuit()) {
+                return true;
+            }
+            Optional<Matching> matching = pairService.save(stage);
+            if (matching.isPresent()) {
+                outputView.printMatching(matching.get());
+                return false;
             }
         }
-        pairService.save(stage);
+        outputView.printOverMatching();
+        return true;
+    }
+
+    private boolean isQuit() {
+        RematchCommand rematchCommand = inputView.readRematchingOrQuit();
+        if (rematchCommand.equals(RematchCommand.QUIT)) {
+            return true;
+        }
+        return false;
     }
 
     private Stage readStage() {

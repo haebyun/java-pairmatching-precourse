@@ -1,6 +1,7 @@
 package pairmatching.view;
 
 import java.util.List;
+import pairmatching.domain.Matching;
 import pairmatching.domain.constants.Course;
 import pairmatching.domain.constants.Level;
 import pairmatching.domain.constants.Mission;
@@ -42,5 +43,13 @@ public class OutputView {
 
     private String getCourses() {
         return String.join(DELIMITER, Course.getCourseNames());
+    }
+
+    public void printMatching(Matching matching) {
+        ConsoleWriter.printlnMessage("페어 매칭 결과입니다.");
+    }
+
+    public void printOverMatching() {
+        ConsoleWriter.printlnMessage("[ERROR] 매칭에 실패하여 다시 미션을 선택합니다.");
     }
 }
