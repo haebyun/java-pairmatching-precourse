@@ -2,6 +2,7 @@ package pairmatching.view;
 
 import java.util.List;
 import pairmatching.domain.Matching;
+import pairmatching.domain.Pair;
 import pairmatching.domain.constants.Course;
 import pairmatching.domain.constants.Level;
 import pairmatching.domain.constants.Mission;
@@ -47,6 +48,11 @@ public class OutputView {
 
     public void printMatching(Matching matching) {
         ConsoleWriter.printlnMessage("페어 매칭 결과입니다.");
+        for (Pair pair : matching.getMatching()) {
+            ConsoleWriter.printlnMessage(
+                    String.join(" : ", pair.getPair())
+            );
+        }
     }
 
     public void printOverMatching() {

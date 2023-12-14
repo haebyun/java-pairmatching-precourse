@@ -40,4 +40,8 @@ public class Matching {
         }
         return false;
     }
+
+    public List<Pair> getMatching() {
+        return matching;
+    }
 }
