@@ -43,6 +43,9 @@ public class PairManager {
             if (gameCommand.equals(GameCommand.INQUIRE)) {
                 inquire();
             }
+            if (gameCommand.equals(GameCommand.RESET)) {
+                reset();
+            }
         }
     }
 
@@ -113,6 +116,13 @@ public class PairManager {
             }
             outputView.printNoMatching();
         }
+    }
+
+    /**
+     * 페어를 초기화하는 기능
+     */
+    public void reset() {
+        pairService.deleteAll();
     }
 
     private static <T> T retry(Supplier<T> supplier) {

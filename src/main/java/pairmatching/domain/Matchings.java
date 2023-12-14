@@ -42,4 +42,8 @@ public class Matchings {
         }
         return Optional.empty();
     }
+
+    public void clear() {
+        matchings.clear();
+    }
 }

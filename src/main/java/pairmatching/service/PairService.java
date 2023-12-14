@@ -88,4 +88,11 @@ public class PairService {
     public Optional<Matching> getMatching(Stage stage) {
         return matchings.getMatching(stage.course(), stage.mission());
     }
+
+    /**
+     * 페어를 초기화하는 메소드
+     */
+    public void deleteAll() {
+        matchings.clear();
+    }
 }
