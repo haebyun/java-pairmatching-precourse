@@ -26,8 +26,8 @@ public class PairManager {
         this.inputView = inputView;
         this.outputView = outputView;
 
-        List<String> backend = CustomFileReader.readFile("resources/backend-crew.md");
-        List<String> frontend = CustomFileReader.readFile("resources/frontend-crew.md");
+        List<String> backend = CustomFileReader.readFile("src/main/resources/backend-crew.md");
+        List<String> frontend = CustomFileReader.readFile("src/main/resources/frontend-crew.md");
         this.pairService = new PairService(backend, frontend);
     }
 
@@ -97,7 +97,7 @@ public class PairManager {
     }
 
     private boolean doesNotContains(Level level, Mission mission) {
-        return level.getMissions().contains(mission);
+        return !level.getMissions().contains(mission);
     }
 
     /**
@@ -113,6 +113,7 @@ public class PairManager {
             Optional<Matching> matching = pairService.getMatching(stage);
             if (matching.isPresent()) {
                 outputView.printMatching(matching.get());
+                break;
             }
             outputView.printNoMatching();
         }
