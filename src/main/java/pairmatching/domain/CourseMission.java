@@ -22,10 +22,11 @@ public class CourseMission {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof CourseMission courseMission)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        return course.equals(courseMission.course) && mission.equals(courseMission.mission);
+        CourseMission that = (CourseMission) o;
+        return course == that.course && mission == that.mission;
     }
 
     @Override
